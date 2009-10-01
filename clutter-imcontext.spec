@@ -58,11 +58,13 @@ done
 %clean
 rm -rf  $RPM_BUILD_ROOT
 
-%files -n %{libname}
+%files
 %defattr(-,root,root,-)
 %doc AUTHORS ChangeLog COPYING README
-%{_libdir}/libclutter-imcontext*so.%{major}*
 %{_bindir}/*
+
+%files -n %{libname}
+%{_libdir}/libclutter-imcontext*so.%{major}*
 
 %files -n %{develname}
 %defattr(-,root,root,-)
