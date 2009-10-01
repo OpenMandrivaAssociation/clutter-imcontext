@@ -74,3 +74,5 @@ rm -rf  $RPM_BUILD_ROOT
 %{_libdir}/libclutter-imcontext-0.1.a
 %{_libdir}/libclutter-imcontext-0.1.la
 %{_libdir}/libclutter-imcontext-0.1.so
+%dir %{_datadir}/gtk-doc/html/%{name}
+%{_datadir}/gtk-doc/html/%{name}/*
