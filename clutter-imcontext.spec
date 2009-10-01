@@ -32,6 +32,7 @@ Description: %{summary}
 Summary: Port of GTK IMContext to Clutter
 Group: Development/C
 Requires: %{name} >= %{version}
+Provides: %{name}-devel
 
 %description -n %{develname}
 Description: %{summary}
