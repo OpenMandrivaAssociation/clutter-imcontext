@@ -38,10 +38,11 @@ Description: %{summary}
 
 %prep
 %setup -q
+perl -pi -e 's,^./configure.*,,' ./autogen.sh
 
 %build
-./autogen.sh --enable-gtk-doc
-%configure2_5x
+./autogen.sh
+%configure2_5x --enable-gtk-doc
 %make
 
 %install
