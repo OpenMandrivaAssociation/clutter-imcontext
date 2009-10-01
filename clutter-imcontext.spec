@@ -37,7 +37,7 @@ Requires: %{name} >= %{version}
 Description: %{summary}
 
 %prep
-%setup -q -n %{name}-%{version}
+%setup -q
 
 %build
 ./autogen.sh --enable-gtk-doc
