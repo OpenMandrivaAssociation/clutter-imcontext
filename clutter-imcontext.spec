@@ -8,7 +8,7 @@ Group: Graphics
 Version: 0.1.4
 License: LGPLv2+
 URL: http://www.clutter-project.org
-Release: %mkrel 2
+Release: %mkrel 3
 Source0: http://git.moblin.org/cgit.cgi/%{name}/snapshot/%{name}-%{version}.tar.bz2
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-buildroot
 
