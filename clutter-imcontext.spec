@@ -1,79 +1,77 @@
-%define major 0
-%define libname %mklibname %name %major
-%define develname %mklibname -d %name
+# Tarfile created using git
+# git clone git://git.moblin.org/clutter-imcontext
+# git archive --format=tar --prefix=%{name}-%{version}/ %{git_version} | bzip2 > ~/%{name}-%{version}-%{gitdate}.tar.bz2
+%define git_version 9043ff1
 
-Name: clutter-imcontext
-Summary: Port of GTK IMContext to Clutter
-Group: Graphics
-Version: 0.1.4
-License: LGPLv2+
-URL: http://www.clutter-project.org
-Release: %mkrel 3
-Source0: http://git.moblin.org/cgit.cgi/%{name}/snapshot/%{name}-%{version}.tar.bz2
-BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-buildroot
+%define major	0
+%define api		0.1
+%define libname		%mklibname %{name} %{api} %{major}
+%define develname	%mklibname -d %{name} %{api}
 
-BuildRequires: glib2-devel
-BuildRequires: gtk-doc
-BuildRequires: clutter-devel >= 1.0
-BuildRequires: gobject-introspection-devel
-BuildRequires: gir-repository
+Name:		clutter-imcontext
+Version:	0.1.6
+Release:	1
+Summary:	IMContext Framework Library for Clutter
+Group:		System/Libraries
+License:	LGPLv2
+URL:        http://maemo.org/packages/view/clutter-imcontext
+Source0:	%{name}-%{version}.tar.bz2
+
+BuildRequires:  pkgconfig(clutter-x11-1.0)
+BuildRequires:  pkgconfig(glib-2.0)
+BuildRequires:	gtk-doc
 
 %description
-Description: %{summary}
+IMContext Framework Library for Clutter.
 
 %package -n %{libname}
-Summary: Port of GTK IMContext to Clutter
-Group: System/Libraries
+Summary:	Runtime library for %{name}
+Group:		System/Libraries
+Obsoletes:	%mklibname  %{name} 0
 
 %description -n %{libname}
-Description: %{summary}
+Runtime library for %{name}.
 
 %package -n %{develname}
-Summary: Port of GTK IMContext to Clutter
-Group: Development/C
-Requires: %{name} >= %{version}
-Provides: %{name}-devel
+Summary:	Development files and headers for %{name}
+Group:		Development/C
+Requires:	%{libname} = %{version}-%{release}
+Provides:	%{name}-devel
+Obsoletes:	%mklibname  %{name} -d
 
 %description -n %{develname}
-Description: %{summary}
+Files for development with %{name}.
 
 %prep
 %setup -q
-perl -pi -e 's,^./configure.*,,' ./autogen.sh
 
 %build
+# Don't run configure from autogen.sh
+sed -i -e '/configure/d' autogen.sh
 ./autogen.sh
-%configure2_5x --enable-gtk-doc
-%make
+
+%configure2_5x \
+	--disable-static
+
+%make V=1
 
 %install
 rm -rf %{buildroot}
 %makeinstall_std
 
-mkdir -p %{buildroot}/%{_datadir}/doc/%{name}-%{version}
-for f in `ls %{buildroot}/%{_datadir}/doc/`; do
-  if [ -f %{buildroot}/%{_datadir}/doc/$f ]; then
-    mv %{buildroot}/%{_datadir}/doc/$f %{buildroot}/%{_datadir}/doc/%{name}-%{version}
-  fi
-done
-
-%clean
-rm -rf  $RPM_BUILD_ROOT
+#Remove libtool archives.
+find %{buildroot} -name '*.la' -exec rm -f {} ';'
 
 %files
-%defattr(-,root,root,-)
-%doc AUTHORS ChangeLog COPYING README
-%{_bindir}/*
+%doc AUTHORS ChangeLog
+%config %{_sysconfdir}/clutter-imcontext/enable_autoshow
+%{_bindir}/clutter-scan-immodules
 
 %files -n %{libname}
-%{_libdir}/libclutter-imcontext*so.%{major}*
+%{_libdir}/lib%{name}-%{api}.so.%{major}*
 
 %files -n %{develname}
-%defattr(-,root,root,-)
-%{_includedir}/%{name}-0.1/%{name}/*
-%{_libdir}/pkgconfig/*
-%{_libdir}/libclutter-imcontext-0.1.a
-%{_libdir}/libclutter-imcontext-0.1.la
-%{_libdir}/libclutter-imcontext-0.1.so
-%dir %{_datadir}/gtk-doc/html/%{name}
-%{_datadir}/gtk-doc/html/%{name}/*
+%{_includedir}/%{name}-%{api}
+%{_libdir}/pkgconfig/%{name}-%{api}.pc
+%{_libdir}/lib%{name}-%{api}.so
+
