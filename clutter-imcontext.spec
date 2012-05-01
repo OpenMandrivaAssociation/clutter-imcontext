@@ -18,8 +18,9 @@ URL:		http://maemo.org/packages/view/clutter-imcontext
 Source0:	%{name}-%{version}.tar.bz2
 
 BuildRequires:	gtk-doc
-BuildRequires:  pkgconfig(clutter-x11-1.0)
-BuildRequires:  pkgconfig(glib-2.0)
+BuildRequires:	pkgconfig(clutter-x11-1.0)
+BuildRequires:	pkgconfig(gl)
+BuildRequires:	pkgconfig(glib-2.0)
 
 %description
 IMContext Framework Library for Clutter.
