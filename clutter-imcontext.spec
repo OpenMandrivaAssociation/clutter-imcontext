@@ -4,22 +4,22 @@
 %define git_version 9043ff1
 
 %define major	0
-%define api		0.1
+%define api	0.1
 %define libname		%mklibname %{name} %{api} %{major}
 %define develname	%mklibname -d %{name} %{api}
 
 Name:		clutter-imcontext
 Version:	0.1.6
-Release:	1
+Release:	2
 Summary:	IMContext Framework Library for Clutter
 Group:		System/Libraries
 License:	LGPLv2
-URL:        http://maemo.org/packages/view/clutter-imcontext
+URL:		http://maemo.org/packages/view/clutter-imcontext
 Source0:	%{name}-%{version}.tar.bz2
 
+BuildRequires:	gtk-doc
 BuildRequires:  pkgconfig(clutter-x11-1.0)
 BuildRequires:  pkgconfig(glib-2.0)
-BuildRequires:	gtk-doc
 
 %description
 IMContext Framework Library for Clutter.
@@ -56,7 +56,6 @@ sed -i -e '/configure/d' autogen.sh
 %make V=1
 
 %install
-rm -rf %{buildroot}
 %makeinstall_std
 
 #Remove libtool archives.
@@ -64,6 +63,7 @@ find %{buildroot} -name '*.la' -exec rm -f {} ';'
 
 %files
 %doc AUTHORS ChangeLog
+%dir %{_sysconfdir}/clutter-imcontext
 %config %{_sysconfdir}/clutter-imcontext/enable_autoshow
 %{_bindir}/clutter-scan-immodules
 
