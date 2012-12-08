@@ -1,78 +1,98 @@
-# Tarfile created using git
-# git clone git://git.moblin.org/clutter-imcontext
-# git archive --format=tar --prefix=%{name}-%{version}/ %{git_version} | bzip2 > ~/%{name}-%{version}-%{gitdate}.tar.bz2
-%define git_version 9043ff1
+%define major 0
+%define libname %mklibname %name %major
+%define develname %mklibname -d %name
 
-%define major	0
-%define api	0.1
-%define libname		%mklibname %{name} %{api} %{major}
-%define develname	%mklibname -d %{name} %{api}
+Name: clutter-imcontext
+Summary: Port of GTK IMContext to Clutter
+Group: Graphics
+Version: 0.1.4
+License: LGPLv2+
+URL: http://www.clutter-project.org
+Release: %mkrel 3
+Source0: http://git.moblin.org/cgit.cgi/%{name}/snapshot/%{name}-%{version}.tar.bz2
+BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-buildroot
 
-Name:		clutter-imcontext
-Version:	0.1.6
-Release:	2
-Summary:	IMContext Framework Library for Clutter
-Group:		System/Libraries
-License:	LGPLv2
-URL:		http://maemo.org/packages/view/clutter-imcontext
-Source0:	%{name}-%{version}.tar.bz2
-
-BuildRequires:	gtk-doc
-BuildRequires:	pkgconfig(clutter-x11-1.0)
-BuildRequires:	pkgconfig(gl)
-BuildRequires:	pkgconfig(glib-2.0)
+BuildRequires: glib2-devel
+BuildRequires: gtk-doc
+BuildRequires: clutter-devel >= 1.0
+BuildRequires: gobject-introspection-devel
+BuildRequires: gir-repository
+BuildRequires: pkgconfig(gl)
 
 %description
-IMContext Framework Library for Clutter.
+Description: %{summary}
 
 %package -n %{libname}
-Summary:	Runtime library for %{name}
-Group:		System/Libraries
-Obsoletes:	%mklibname  %{name} 0
+Summary: Port of GTK IMContext to Clutter
+Group: System/Libraries
 
 %description -n %{libname}
-Runtime library for %{name}.
+Description: %{summary}
 
 %package -n %{develname}
-Summary:	Development files and headers for %{name}
-Group:		Development/C
-Requires:	%{libname} = %{version}-%{release}
-Provides:	%{name}-devel
-Obsoletes:	%mklibname  %{name} -d
+Summary: Port of GTK IMContext to Clutter
+Group: Development/C
+Requires: %{name} >= %{version}
+Provides: %{name}-devel
 
 %description -n %{develname}
-Files for development with %{name}.
+Description: %{summary}
 
 %prep
 %setup -q
+perl -pi -e 's,^./configure.*,,' ./autogen.sh
 
 %build
-# Don't run configure from autogen.sh
-sed -i -e '/configure/d' autogen.sh
 ./autogen.sh
-
-%configure2_5x \
-	--disable-static
-
-%make V=1
+%configure2_5x --enable-gtk-doc
+%make
 
 %install
+rm -rf %{buildroot}
 %makeinstall_std
 
-#Remove libtool archives.
-find %{buildroot} -name '*.la' -exec rm -f {} ';'
+mkdir -p %{buildroot}/%{_datadir}/doc/%{name}-%{version}
+for f in `ls %{buildroot}/%{_datadir}/doc/`; do
+  if [ -f %{buildroot}/%{_datadir}/doc/$f ]; then
+    mv %{buildroot}/%{_datadir}/doc/$f %{buildroot}/%{_datadir}/doc/%{name}-%{version}
+  fi
+done
+
+%clean
+rm -rf  $RPM_BUILD_ROOT
 
 %files
-%doc AUTHORS ChangeLog
-%dir %{_sysconfdir}/clutter-imcontext
-%config %{_sysconfdir}/clutter-imcontext/enable_autoshow
-%{_bindir}/clutter-scan-immodules
+%defattr(-,root,root,-)
+%doc AUTHORS ChangeLog COPYING README
+%{_bindir}/*
 
 %files -n %{libname}
-%{_libdir}/lib%{name}-%{api}.so.%{major}*
+%{_libdir}/libclutter-imcontext*so.%{major}*
 
 %files -n %{develname}
-%{_includedir}/%{name}-%{api}
-%{_libdir}/pkgconfig/%{name}-%{api}.pc
-%{_libdir}/lib%{name}-%{api}.so
+%defattr(-,root,root,-)
+%{_includedir}/%{name}-0.1/%{name}/*
+%{_libdir}/pkgconfig/*
+%{_libdir}/libclutter-imcontext-0.1.a
+%{_libdir}/libclutter-imcontext-0.1.so
+%dir %{_datadir}/gtk-doc/html/%{name}
+%{_datadir}/gtk-doc/html/%{name}/*
+
+
+%changelog
+* Thu Dec 09 2010 Oden Eriksson <oeriksson@mandriva.com> 0.1.4-3mdv2011.0
++ Revision: 617070
+- the mass rebuild of 2010.0 packages
+
+* Thu Oct 01 2009 Olivier Blin <oblin@mandriva.com> 0.1.4-2mdv2010.0
++ Revision: 452373
+- provide clutter-imcontext-devel
+
+* Thu Oct 01 2009 Olivier Blin <oblin@mandriva.com> 0.1.4-1mdv2010.0
++ Revision: 452285
+- package gtk doc
+- do not run configure twice (and fix passing gtk-doc option)
+- move binary and doc outside of lib package
+- initial import (from Claudio Matsuoka and Caio Begotti, based on Fedora package)
+- Created package structure for clutter-imcontext.
 
