@@ -25,22 +25,22 @@ BuildRequires:	pkgconfig(glib-2.0)
 %description
 IMContext Framework Library for Clutter.
 
-%package -n %{libname}
+%package -n	%{libname}
 Summary:	Runtime library for %{name}
 Group:		System/Libraries
 Obsoletes:	%mklibname  %{name} 0
 
-%description -n %{libname}
+%description -n	%{libname}
 Runtime library for %{name}.
 
-%package -n %{develname}
+%package -n	%{develname}
 Summary:	Development files and headers for %{name}
 Group:		Development/C
 Requires:	%{libname} = %{version}-%{release}
 Provides:	%{name}-devel
 Obsoletes:	%mklibname  %{name} -d
 
-%description -n %{develname}
+%description -n	%{develname}
 Files for development with %{name}.
 
 %prep
@@ -50,16 +50,12 @@ sed -i -e '/configure/d' autogen.sh
 ./autogen.sh
 
 %build
-%configure2_5x \
-	--disable-static
+%configure2_5x	--disable-static
 
 %make V=1
 
 %install
 %makeinstall_std
-
-#Remove libtool archives.
-find %{buildroot} -name '*.la' -exec rm -f {} ';'
 
 %files
 %doc AUTHORS ChangeLog
@@ -74,4 +70,3 @@ find %{buildroot} -name '*.la' -exec rm -f {} ';'
 %{_includedir}/%{name}-%{api}
 %{_libdir}/pkgconfig/%{name}-%{api}.pc
 %{_libdir}/lib%{name}-%{api}.so
-
