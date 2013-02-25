@@ -45,12 +45,11 @@ Files for development with %{name}.
 
 %prep
 %setup -q
-
-%build
 # Don't run configure from autogen.sh
 sed -i -e '/configure/d' autogen.sh
 ./autogen.sh
 
+%build
 %configure2_5x \
 	--disable-static
 
