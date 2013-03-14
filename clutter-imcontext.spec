@@ -5,8 +5,8 @@
 
 %define major	0
 %define api	0.1
-%define libname		%mklibname %{name} %{api} %{major}
-%define develname	%mklibname -d %{name} %{api}
+%define libname	%mklibname %{name} %{api} %{major}
+%define devname	%mklibname -d %{name} %{api}
 
 Name:		clutter-imcontext
 Version:	0.1.6
@@ -14,7 +14,7 @@ Release:	2
 Summary:	IMContext Framework Library for Clutter
 Group:		System/Libraries
 License:	LGPLv2
-URL:		http://maemo.org/packages/view/clutter-imcontext
+Url:		http://maemo.org/packages/view/clutter-imcontext
 Source0:	%{name}-%{version}.tar.bz2
 
 BuildRequires:	gtk-doc
@@ -28,19 +28,17 @@ IMContext Framework Library for Clutter.
 %package -n	%{libname}
 Summary:	Runtime library for %{name}
 Group:		System/Libraries
-Obsoletes:	%mklibname  %{name} 0
 
 %description -n	%{libname}
 Runtime library for %{name}.
 
-%package -n	%{develname}
+%package -n	%{devname}
 Summary:	Development files and headers for %{name}
 Group:		Development/C
 Requires:	%{libname} = %{version}-%{release}
 Provides:	%{name}-devel
-Obsoletes:	%mklibname  %{name} -d
 
-%description -n	%{develname}
+%description -n	%{devname}
 Files for development with %{name}.
 
 %prep
@@ -66,7 +64,8 @@ sed -i -e '/configure/d' autogen.sh
 %files -n %{libname}
 %{_libdir}/lib%{name}-%{api}.so.%{major}*
 
-%files -n %{develname}
+%files -n %{devname}
 %{_includedir}/%{name}-%{api}
 %{_libdir}/pkgconfig/%{name}-%{api}.pc
 %{_libdir}/lib%{name}-%{api}.so
+
