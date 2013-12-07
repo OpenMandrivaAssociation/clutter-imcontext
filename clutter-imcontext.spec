@@ -10,7 +10,7 @@
 
 Name:		clutter-imcontext
 Version:	0.1.6
-Release:	5
+Release:	6
 Summary:	IMContext Framework Library for Clutter
 Group:		System/Libraries
 License:	LGPLv2
