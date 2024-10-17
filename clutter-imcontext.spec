@@ -14,7 +14,7 @@ Release:	13
 Summary:	IMContext Framework Library for Clutter
 Group:		System/Libraries
 License:	LGPLv2
-Url:		http://maemo.org/packages/view/clutter-imcontext
+Url:		https://maemo.org/packages/view/clutter-imcontext
 Source0:	%{name}-%{version}.tar.bz2
 
 BuildRequires:	gtk-doc
