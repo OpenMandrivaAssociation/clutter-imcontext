@@ -17,6 +17,11 @@ License:	LGPLv2
 Url:		https://maemo.org/packages/view/clutter-imcontext
 Source0:	%{name}-%{version}.tar.bz2
 
+BuildRequires:	autoconf
+BuildRequires:	automake
+BuildRequires:	libtool-base
+BuildRequires:	slibtool
+BuildRequires:	make
 BuildRequires:	gtk-doc
 BuildRequires:	pkgconfig(clutter-x11-1.0)
 BuildRequires:	pkgconfig(gl)
